@@ -4,14 +4,7 @@ import jieba
 import csv
 import pymysql
 
-jieba.add_word('无语')
-jieba.add_word('有味道')
-jieba.add_word('极')
-jieba.add_word('最')
-jieba.add_word('太')
-jieba.add_word('太多')
-jieba.add_word('混乱')
-jieba.add_word('房间隔音')
+
 # 加载停用词
 stopWordCsv = csv.reader(open('/Users/yejingxuan/downloads/python毕业论文材料/停用词.csv', encoding='utf-8-sig'))
 stopWordList = []
@@ -25,7 +18,7 @@ for row in stopWordCsv:
 # print('删除停用词之后的分词个数 = {count}'.format(count=len(segList)))
 
 # 加载否定词, 暂时手动输入
-notWordList = ['不', '没', '无', '非', '莫', '弗', '勿', '毋', '未', '否', '别', '無', '休', '难道', '不怎么', '没有', '得不到', '除非']
+notWordList = ['不', '没', '无', '非', '莫', '弗', '勿', '毋', '未', '否', '别', '無', '休', '难道', '不怎么', '没有', '得不到', '除非', '不是']
 
 # 加载情感词
 emotionCsv = csv.reader(open('/Users/yejingxuan/downloads/python毕业论文材料/情感词.csv', encoding='utf-8-sig'))
@@ -107,6 +100,16 @@ jieba.add_word('太')
 jieba.add_word('太多')
 jieba.add_word('混乱')
 jieba.add_word('房间隔音')
+jieba.add_word('无语')
+jieba.add_word('有味道')
+jieba.add_word('极')
+jieba.add_word('最')
+jieba.add_word('太')
+jieba.add_word('太多')
+jieba.add_word('混乱')
+jieba.add_word('房间隔音')
+jieba.add_word('小姐姐')
+jieba.add_word('小哥哥')
 
 
 # 加载程度副词
@@ -247,6 +250,7 @@ connection = pymysql.connect(host='localhost',
                                  charset='utf8mb4')
 cur = connection.cursor()
 sql = "select word , wordwar ,score, hotelid from keywordlistwithID2 where LENGTH(wordwar) < 30 "
+# sql = "SELECT word , wordwar ,score, hotelid FROM keywordlistwithID2 WHERE wordwar='价格不是很贵' LIMIT 10"
 cur.execute(sql)
 hotelContent = cur.fetchall()
 connection.close()

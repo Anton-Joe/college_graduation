@@ -21,13 +21,13 @@ word_list = [
     '房间', '卫生', '环境', '位置', '交通', '性价比', '设施', '前台', '服务态度', '早餐', '价格', '隔音', '床', '地铁站', '地理位置', '地铁', '态度'
 ]
 csv_first_row_list = [
-    '房间', '卫生', '环境', '位置', '交通', '性价比', '设施', '前台', '早餐', '价格', '隔音', '床', '态度', '地铁'
+    '房间', '卫生', '环境', '位置', '交通', '性价比', '设施', '早餐', '价格', '隔音', '床', '态度'
 ]
 
 for word, hotelid, score in result:
     if word in word_list:
-        if word in ['地铁站', '地铁']: word = '地铁'
-        if word in ['态度', '服务态度']: word = '态度'
+        if word in ['地铁站', '地铁', '交通']: word = '交通'
+        if word in ['态度', '服务态度', '前台']: word = '态度'
         if word in ['位置', '地理位置']: word = '位置'
 
         if hotelid not in hotel_json.keys():
@@ -40,13 +40,11 @@ for word, hotelid, score in result:
                     '交通': {'count': 0, 'score': 0},
                     '性价比': {'count': 0, 'score': 0},
                     '设施': {'count': 0, 'score': 0},
-                    '前台': {'count': 0, 'score': 0},
                     '早餐': {'count': 0, 'score': 0},
                     '价格': {'count': 0, 'score': 0},
                     '隔音': {'count': 0, 'score': 0},
                     '床': {'count': 0, 'score': 0},
                     '态度': {'count': 0, 'score': 0},
-                    '地铁': {'count': 0, 'score': 0}
                 }
             hotel_json[hotelid] = json
 
@@ -79,6 +77,13 @@ with open(file_path, 'w+',encoding='utf-8-sig') as f:
                 row.append(hotel_json[hotelID][word]['score'])
             else:
                 row.append('0')
+        sql = "SELECT hotelRecommend2, hotelScore, hotelEnvironment, hotelEquipment, hotelService, hotelHealth FROM hotelFinalList WHERE hotelid = '{x}'".format(
+            x=hotelID)
+        cur = connection.cursor()
+        cur.execute(sql)
+        result = cur.fetchone()
+        for a in result:
+            row.append(a)
         print(row)
 
         writer.writerow(row)
